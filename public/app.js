@@ -93,7 +93,10 @@ function MyApp() {
                 <div className="row">
                     <p className="col s6 offset-s3 current-date">{formatDate(new Date())}</p>
                     <div className="col s6 offset-s3">
-                        <p className="total-number">{itemList.length} tasks</p>
+                        <p className="total-number">
+                            {itemList.length}
+                            {itemList.length === 1 ? ' task' : ' tasks'}
+                        </p>
                     </div>
                     <div className="input-field col s6 offset-s3">
                         <input id="add-task" type="text" className="validate"
