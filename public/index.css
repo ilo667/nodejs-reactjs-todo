@@ -89,6 +89,11 @@ input[type=text]:not(.browser-default) {
     margin: 0;
 }
 
+.preloader-wrapper {
+    display: block;
+    margin: 0 auto;
+}
+
 .dark {
     background: #2d2d2d;
 }

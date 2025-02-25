@@ -2,6 +2,7 @@ function MyApp() {
     const [itemList, setItemList] = React.useState([]);
     const [themeWhite, setThemeWhite] = React.useState(false);
     const [taskInput, setTaskInput] = React.useState('');
+    const [loading, setLoading] = React.useState(true);
     const formatDate = date => {
         return new Intl.DateTimeFormat('en', {
             day: '2-digit',
@@ -12,6 +13,7 @@ function MyApp() {
             second: '2-digit'
         }).format(new Date(date));
     };
+
     React.useEffect(() => {
         fetch('/api/todo', {
             method: 'get'
@@ -19,9 +21,14 @@ function MyApp() {
             .then(res => res.json())
             .then(todos => {
                 setItemList(todos);
+                setLoading(false);
             })
-            .catch(e => console.log(e));
+            .catch(e => {
+                console.log(e);
+                setLoading(false);
+            });
     }, []);
+
     function onSelectItem(id) {
         const item = itemList.find(item => item.id === id);
 
@@ -39,19 +46,22 @@ function MyApp() {
             );
         }).catch(e => console.log(e));
     }
+
     function onDeleteItem(id) {
         fetch('/api/todo/' + id, {
             method: 'delete'
         }).then(() => {
             setItemList(list => list.filter(item => item.id !== id));
         }).catch(e => console.log(e));
-
     }
+
     function onThemeChange() {
         setThemeWhite(!themeWhite);
     }
+
     function onSubmit(e) {
         e.preventDefault();
+
         if (!taskInput.trim()) return;
 
         fetch('/api/todo', {
@@ -63,11 +73,12 @@ function MyApp() {
             setTaskInput('');
         }).catch(e => console.log(e));
     }
+
     return (
         <div className={themeWhite ? '' : 'dark'} style={{minHeight: '100vh', paddingBottom: '5rem'}}>
             <nav>
                 <div className="nav-wrapper">
-                    <a href="#" className="brand-logo">Todo list</a>
+                    <a href="#" className="brand-logo">Todo List</a>
                     <ul className="right">
                         <li>
                             <label>
@@ -95,44 +106,60 @@ function MyApp() {
                 </div>
             </form>
 
-            <ul className="collection with-header container">
-                <li className="collection-header">
-                    {itemList.length > 0 ? (
-                            <h4>Your tasks</h4>
-                        ) :
-                        <h4>There are no tasks</h4>
-                    }
-                </li>
-                {itemList.map((item) => {
-                    const { id, title, createdAt, updatedAt, done } = item;
-                    return (
-                        <li
-                            className="collection-item"
-                            key={id}
-                        >
-                            <div>
-                                <label>
-                                    <input type="checkbox"
-                                           className="filled-in"
-                                           checked={done}
-                                           onChange={() => onSelectItem(id)}
-                                    />
-                                    <span style={{textDecoration: done ? 'line-through' : 'none'}}>{title}
-                                        <span>Added: {formatDate(createdAt)}</span>
+            {loading ? (
+                <div className="preloader-wrapper big active">
+                    <div className="spinner-layer spinner-blue-only">
+                        <div className="circle-clipper left">
+                            <div className="circle"></div>
+                        </div>
+                        <div className="gap-patch">
+                            <div className="circle"></div>
+                        </div>
+                        <div className="circle-clipper right">
+                            <div className="circle"></div>
+                        </div>
+                    </div>
+                </div>
+            ) : (
+                <ul className="collection with-header container">
+                    <li className="collection-header">
+                        {itemList.length > 0
+                            ? <h4>Your tasks</h4>
+                            : <h4>There are no tasks</h4>}
+                    </li>
+                    {itemList.map((item) => {
+                        const {id, title, createdAt, updatedAt, done} = item;
+
+                        return (
+                            <li
+                                className="collection-item"
+                                key={id}
+                            >
+                                <div>
+                                    <label>
+                                        <input type="checkbox"
+                                               className="filled-in"
+                                               checked={done}
+                                               onChange={() => onSelectItem(id)}
+                                        />
+                                        <span style={{textDecoration: done ? 'line-through' : 'none'}}>{title}
+                                            <span>Added: {formatDate(createdAt)}</span>
                                         <span>Updated: {formatDate(updatedAt)}</span>
                                     </span>
-                                </label>
-                            </div>
-                            <a href="#" className="secondary-content" onClick={() => onDeleteItem(id)}>
-                                <i className="material-icons">clear</i>
-                            </a>
-                        </li>
-                    );
-                })}
-            </ul>
+                                    </label>
+                                </div>
+                                <a href="#" className="secondary-content" onClick={() => onDeleteItem(id)}>
+                                    <i className="material-icons">clear</i>
+                                </a>
+                            </li>
+                        );
+                    })}
+                </ul>
+            )}
         </div>
     );
 }
+
 const container = document.getElementById('root');
 const root = ReactDOM.createRoot(container);
 root.render(<MyApp />);
