@@ -12,7 +12,7 @@ app.use('/api/todo', todoRoutes);
 const PORT = process.env.PORT || 3000;
 
 app.use((req, res) => {
-   res.sendFile('/index.html');
+    res.sendFile('/index.html');
 });
 
 async function start() {
