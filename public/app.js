@@ -90,6 +90,7 @@ function MyApp() {
                                onChange={(e) => setTaskInput(e.target.value)}
                         />
                         <label htmlFor="add-task">Add new task</label>
+                        <button type="submit" className="btn action-add">Add task</button>
                     </div>
                 </div>
             </form>

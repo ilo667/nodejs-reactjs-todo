@@ -40,6 +40,15 @@ input[type=text]:not(.browser-default) {
     border-color: #185887;
 }
 
+.action-add {
+    background: #185887;
+}
+
+.action-add:hover,
+.action-add:focus {
+    background: #1d6da8;
+}
+
 .collection-item [type="checkbox"].filled-in:checked+span:not(.lever):after,
 .collection-item [type="checkbox"].filled-in:checked+span:not(.lever):before,
 .collection-item [type="checkbox"].filled-in:not(:checked)+span:not(.lever):after {
