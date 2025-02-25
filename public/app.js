@@ -36,7 +36,7 @@ function MyApp() {
 
         fetch('/api/todo/' + id, {
             method: 'put',
-            headers: {'Content-Type': 'application/json'}, // header should be added if we pass something to server
+            headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({done: !item.done})
         }).then(res => res.json()).then(({todo}) => {
             setItemList(list =>
@@ -66,7 +66,7 @@ function MyApp() {
 
         fetch('/api/todo', {
             method: 'post',
-            headers: {'Content-Type': 'application/json'}, // header should be added if we pass something to server
+            headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({title: taskInput})
         }).then(res => res.json()).then(({todo}) => {
             setItemList(list => [...list, todo]);
@@ -142,10 +142,11 @@ function MyApp() {
                                                checked={done}
                                                onChange={() => onSelectItem(id)}
                                         />
-                                        <span style={{textDecoration: done ? 'line-through' : 'none'}}>{title}
+                                        <span style={{textDecoration: done ? 'line-through' : 'none'}}>
+                                            {title}
                                             <span>Added: {formatDate(createdAt)}</span>
-                                        <span>Updated: {formatDate(updatedAt)}</span>
-                                    </span>
+                                            <span>Updated: {formatDate(updatedAt)}</span>
+                                        </span>
                                     </label>
                                 </div>
                                 <a href="#" className="secondary-content" onClick={() => onDeleteItem(id)}>
