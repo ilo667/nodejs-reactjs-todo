@@ -1,18 +1,15 @@
 const { Sequelize } = require('sequelize');
+const keys = require('../keys');
 
 let sequelize;
-
-const DB_NAME = 'node-react-todo';
-const USER_NAME = 'root';
-const PASSWORD = 'Qwezxcasd1*';
 
 if (process.env.JAWSDB_URL) {
     sequelize = new Sequelize(process.env.JAWSDB_URL);
 } else {
     sequelize = new Sequelize(
-        process.env.DB_NAME || DB_NAME,
-        process.env.DB_USER || USER_NAME,
-        process.env.DB_PW || PASSWORD,
+        keys.DB_NAME,
+        keys.DB_USER,
+        keys.DB_PW,
         {
             host: 'localhost',
             dialect: 'mysql',
